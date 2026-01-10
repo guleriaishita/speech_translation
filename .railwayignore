@@ -1,0 +1,14 @@
+.env
+.env.local
+*.pyc
+__pycache__/
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+node_modules/
+.git/
+.vscode/
+.idea/
+*.log
+.DS_Store

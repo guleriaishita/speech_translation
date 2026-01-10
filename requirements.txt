@@ -1,0 +1,41 @@
+# Core Django
+Django==4.2
+djangorestframework==3.14.0
+
+# WebSocket and Real-time
+channels==4.0.0
+channels-redis==4.1.0
+daphne==4.0.0
+
+# Database
+
+
+# Task Queue
+celery==5.3.4
+redis==5.0.1
+
+# Utilities
+python-dotenv==1.0.0
+python-magic==0.4.27
+
+# Production Dependencies
+dj-database-url==2.1.0
+psycopg2-binary==2.9.9
+gunicorn==21.2.0
+whitenoise==6.6.0
+
+# Whisper (OpenAI's open-source model)
+openai-whisper==20231117
+torch==2.1.0  # Required for Whisper
+
+# Translation - LOCAL (No API needed!)
+transformers==4.36.0  # HuggingFace for NLLB translation model
+sentencepiece==0.1.99  # Required for NLLB tokenizer
+accelerate==0.25.0  # For faster model loading
+
+# Audio Processing
+pydub==0.25.1
+webrtcvad==2.0.10
+
+# CORS
+django-cors-headers==4.3.1
