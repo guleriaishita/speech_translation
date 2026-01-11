@@ -1,0 +1,79 @@
+# Render.com Deployment Checklist
+
+## Files Created ✅
+- [x] `render.yaml` - Main deployment configuration
+- [x] `build.sh` - Build script
+- [x] `.env.example` - Environment variables template
+- [x] `RENDER_DEPLOY.txt` - Quick deployment guide
+
+## Pre-Deployment Checklist
+
+### 1. Push Code to GitHub
+```bash
+git add .
+git commit -m "Add Render deployment configuration"
+git push origin main
+```
+
+### 2. Prepare Environment Variables
+You'll need these API keys:
+- [ ] WHISPER_API_KEY (optional - can use local Whisper)
+- [ ] DEEPL_API_KEY or HUGGINGFACE_API_KEY
+- [ ] OPENAI_API_KEY (for TTS)
+
+### 3. Deploy to Render
+
+**Quick Steps:**
+1. Go to https://dashboard.render.com
+2. Click "New" → "Blueprint"
+3. Connect your GitHub repository
+4. Render auto-detects `render.yaml`
+5. Add your API keys in environment variables
+6. Click "Apply"
+
+**What Render Creates:**
+- Web Service (Django + WebSockets via Daphne)
+- Celery Worker (background tasks)
+- PostgreSQL Database (90 days free)
+- Redis (90 days free)
+
+### 4. Post-Deployment
+
+After ~10 minutes:
+- [ ] Check deployment logs for errors
+- [ ] Visit your app URL
+- [ ] Test file upload feature
+- [ ] Test real-time translation
+- [ ] Create superuser via Render shell
+
+## Important Notes
+
+**Free Tier:**
+- ⚠️ Services sleep after 15 min inactivity
+- ⚠️ Cold start = 30-60 seconds on first request
+- ⚠️ Database expires after 90 days (export before expiry)
+
+**To Prevent Sleep:**
+- Use uptime monitor (e.g., UptimeRobot - free)
+- Pings your app every 5 minutes
+
+**When Database Nears 90 Days:**
+1. Export: `pg_dump $DATABASE_URL > backup.sql`
+2. Create new free database
+3. Import backup to new database
+4. Update DATABASE_URL environment variable
+
+## Your App URLs
+
+After deployment:
+- Main App: `https://speech-translator-web.onrender.com`
+- Admin Panel: `https://speech-translator-web.onrender.com/admin`
+
+## Need Help?
+
+See `RENDER_DEPLOY.txt` for quick reference
+Check Render logs if issues occur
+
+---
+
+Ready to deploy! 🚀

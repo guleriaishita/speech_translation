@@ -1,0 +1,42 @@
+# Render Deployment - Quick Guide
+
+## Deploy in 3 Steps
+
+1. **Go to Render:** https://dashboard.render.com
+2. **New Blueprint** → Connect your GitHub repo
+3. **Add API Keys** in environment variables → Deploy!
+
+Render auto-detects render.yaml and sets everything up.
+
+## Required Environment Variables
+
+Add in Render Dashboard:
+- SECRET_KEY (auto-generate)
+- WHISPER_API_KEY (optional if using local)
+- DEEPL_API_KEY or HUGGINGFACE_API_KEY
+- OPENAI_API_KEY (for TTS)
+
+## Your App Will Have
+
+- Web service: Django + WebSocket support
+- Celery worker: Background task processing
+- PostgreSQL database (90 days free)
+- Redis cache (90 days free)
+
+## Access
+
+After deployment (~10 min):
+- App: https://speech-translator-web.onrender.com
+- Admin: /admin
+
+## Free Tier Notes
+
+⚠️ Sleeps after 15 min inactivity (30s cold start)
+⚠️ Database expires after 90 days (can export/recreate)
+
+✅ Good for: Testing, demos, low-traffic apps
+✅ Upgrade: $7/month for always-on
+
+---
+
+Complete guide in .env.example for all configuration details.

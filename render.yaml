@@ -1,0 +1,79 @@
+services:
+  # Web Service (Django + Channels)
+  - type: web
+    name: speech-translator-web
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate"
+    startCommand: "daphne -b 0.0.0.0 -p $PORT speech_translator.asgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DJANGO_SETTINGS_MODULE
+        value: speech_translator.settings
+      - key: DATABASE_URL
+        fromDatabase:
+          name: postgres
+          property: connectionString
+      - key: REDIS_URL
+        fromDatabase:
+          name: redis
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
+      - key: CELERY_BROKER_URL
+        fromDatabase:
+          name: redis
+          property: connectionString
+      - key: CELERY_RESULT_BACKEND
+        fromDatabase:
+          name: redis
+          property: connectionString
+    healthCheckPath: /
+    
+  # Celery Worker (Background Tasks)
+  - type: worker
+    name: speech-translator-celery
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "celery -A speech_translator worker --loglevel=info"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: postgres
+          property: connectionString
+      - key: REDIS_URL
+        fromDatabase:
+          name: redis
+          property: connectionString
+      - key: CELERY_BROKER_URL
+        fromDatabase:
+          name: redis
+          property: connectionString
+      - key: CELERY_RESULT_BACKEND
+        fromDatabase:
+          name: redis
+          property: connectionString
+      - key: SECRET_KEY
+        sync: false
+
+databases:
+  # PostgreSQL Database
+  - name: postgres
+    plan: free
+    databaseName: speech_translator_db
+    user: speech_translator_user
+  
+  # Redis (for Celery & Channels)
+  - name: redis
+    plan: free
+    maxmemoryPolicy: allkeys-lru

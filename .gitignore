@@ -36,6 +36,14 @@ celerybeat.pid
 # Logs
 logs/*.log
 
+# Test artifacts
+.pytest_cache/
+htmlcov/
+.coverage
+*.coverage
+coverage.xml
+.tox/
+
 # Media files
 MD FILES/
 
