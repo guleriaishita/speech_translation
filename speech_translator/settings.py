@@ -112,6 +112,8 @@ FILE_UPLOAD_MAX_MEMORY_SIZE = int(os.getenv('MAX_UPLOAD_SIZE', 52428800))
 DATA_UPLOAD_MAX_MEMORY_SIZE = int(os.getenv('MAX_UPLOAD_SIZE', 52428800))
 
 # Logging Configuration
+# Use console logging for cloud platforms (Render, Railway, etc.)
+# File logging only for local development
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -122,31 +124,29 @@ LOGGING = {
         },
     },
     'handlers': {
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'django.log'),
-            'formatter': 'verbose',
-        },
         'console': {
-            'level': 'DEBUG',
+            'level': 'DEBUG' if DEBUG else 'INFO',
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['file', 'console'],
+            'handlers': ['console'],
             'level': 'INFO',
             'propagate': True,
         },
         'audio_processor': {
-            'handlers': ['file', 'console'],
-            'level': 'DEBUG',
+            'handlers': ['console'],
+            'level': 'DEBUG' if DEBUG else 'INFO',
         },
         'realtime_handler': {
-            'handlers': ['file', 'console'],
-            'level': 'DEBUG',
+            'handlers': ['console'],
+            'level': 'DEBUG' if DEBUG else 'INFO',
+        },
+        'session_manager': {
+            'handlers': ['console'],
+            'level': 'DEBUG' if DEBUG else 'INFO',
         },
     },
 }
