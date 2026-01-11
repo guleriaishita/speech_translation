@@ -76,4 +76,3 @@ databases:
   # Redis (for Celery & Channels)
   - name: redis
     plan: free
-    maxmemoryPolicy: allkeys-lru
